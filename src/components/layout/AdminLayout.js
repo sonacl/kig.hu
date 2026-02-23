@@ -22,7 +22,7 @@ export default async function AdminLayout({ children }) {
 
   if (role === 'ADMIN') {
     links.push({ href: '/admin/redirects', label: 'Átirányítások' })
-    links.push({ href: '/admin/navbar', label: 'Navigáció (Menü)' })
+    links.push({ href: '/admin/navbar', label: 'Navigáció' })
   }
 
   return (

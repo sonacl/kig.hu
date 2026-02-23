@@ -37,16 +37,6 @@ export default async function AdminDashboard() {
             </div>
           </div>
         </div>
-
-        <div className="bg-blue-50 border border-blue-200 p-4 rounded text-blue-800 text-sm">
-          <p>
-            <strong>Üdvözöljük az új KIG Honlap Adminisztrációs felületén!</strong>
-          </p>
-          <p className="mt-1">
-            Itt tudja kezelni a híreket, az aktualitásokat és a felhasználókat. A módosítások
-            azonnal megjelennek a publikus oldalon.
-          </p>
-        </div>
       </div>
     </AdminLayout>
   )

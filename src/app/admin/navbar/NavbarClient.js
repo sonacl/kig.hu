@@ -31,7 +31,7 @@ export default function NavbarClient() {
         body: JSON.stringify({ items }),
       })
       if (res.ok) {
-        alert('Navigáció sikeresen mentve!')
+        alert('Navigáció sikeresen mentve! (Frissítsd az oldalt a változások megtekintéséhez)')
         fetchItems()
       } else {
         const error = await res.json()
@@ -80,7 +80,7 @@ export default function NavbarClient() {
   return (
     <div className="bg-white p-6 rounded border shadow-sm max-w-4xl">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Navigáció (Menü) Beállítása</h1>
+        <h1 className="text-2xl font-bold">Navigáció Beállítása</h1>
         <Button onClick={addItem}>+ Fő Menüpont Hozzáadása</Button>
       </div>
 
