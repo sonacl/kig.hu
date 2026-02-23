@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id       String    @id @default(cuid())
+  email    String    @unique @default("admin@kig.hu")
+  googleId String?   @unique
+  name     String?
+  role     String    @default("ADMIN") // 'ADMIN' or 'EDITOR'
+  sessions Session[]
+  posts    Post[]
+}
+
+model Session {
+  id        String   @id
+  userId    String
+  expiresAt DateTime
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+model Post {
+  id            String   @id @default(cuid())
+  title         String
+  slug          String   @unique
+  content       String
+  description   String?
+  featuredImage String?
+  redirectUrl   String?
+  isAktualis    Boolean  @default(false)
+  isKozhasznu   Boolean  @default(false)
+  status        String   @default("PUBLIC") // 'PUBLIC', 'UNLISTED', 'HIDDEN'
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  authorId      String
+  author        User     @relation(fields: [authorId], references: [id])
+  tags          Tag[]
+}
+
+model Tag {
+  id    String @id @default(cuid())
+  name  String @unique
+  icon  String // 'A', 'F', or 'G'
+  posts Post[]
+}
+
+model Redirect {
+  id          String   @id @default(cuid())
+  source      String   @unique
+  destination String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model NavItem {
+  id       String       @id @default(cuid())
+  label    String
+  url      String?      // Null = has dropdown options
+  order    Int          @default(0)
+  subItems NavSubItem[]
+}
+
+model NavSubItem {
+  id        String  @id @default(cuid())
+  label     String
+  url       String
+  order     Int     @default(0)
+  navItemId String
+  navItem   NavItem @relation(fields: [navItemId], references: [id], onDelete: Cascade)
+}
