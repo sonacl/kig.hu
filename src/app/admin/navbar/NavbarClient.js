@@ -88,7 +88,7 @@ export default function NavbarClient() {
         {items.map((item, index) => (
           <div key={index} className="border rounded p-4 bg-gray-50 flex flex-col gap-3">
             <div className="flex flex-col md:flex-row items-center gap-3">
-              <div className="flex-grow flex items-center gap-2 w-full">
+              <div className="grow flex items-center gap-2 w-full">
                 <span className="font-bold text-gray-500">{index + 1}.</span>
                 <Input
                   className="bg-white"

@@ -21,7 +21,7 @@ export default function NavbarItem({ item, showSeparator }) {
       )}
 
       {hasSubItems && (
-        <ul className="absolute left-0 top-full hidden group-hover:block bg-white border border-gray-200 shadow-md min-w-[200px] z-50">
+        <ul className="absolute left-0 top-full hidden group-hover:block bg-white border border-gray-200 shadow-md min-w-50 z-50">
           {item.subItems.map(subItem => (
             <li
               key={subItem.id || subItem.label}

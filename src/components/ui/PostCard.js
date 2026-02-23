@@ -32,7 +32,7 @@ export default function PostCard({ post }) {
                   alt={TAG_ICONS[tag.icon].label}
                   width={20}
                   height={20}
-                  title={tagIcons[tag.icon].label}
+                  title={TAG_ICONS[tag.icon].label}
                 />
               )
           )}
