@@ -1,6 +1,5 @@
-import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
-import { getCurrentUser } from '@/lib/auth'
+import { requireAuth } from '@/lib/api-utils'
 
 export async function GET() {
   try {
@@ -8,23 +7,21 @@ export async function GET() {
       include: { subItems: { orderBy: { order: 'asc' } } },
       orderBy: { order: 'asc' },
     })
-    return NextResponse.json(navItems)
+    return Response.json(navItems)
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return Response.json({ error: error.message }, { status: 500 })
   }
 }
 
 export async function POST(req) {
-  const user = await getCurrentUser()
-  if (!user || user.role !== 'ADMIN') {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const [user, errorResponse] = await requireAuth('ADMIN')
+  if (errorResponse) return errorResponse
 
   try {
     const { items } = await req.json()
 
-    await prisma.navSubItem.deleteMany()
-    await prisma.navItem.deleteMany()
+    // Transaction to ensure atomicity
+    await prisma.$transaction([prisma.navSubItem.deleteMany(), prisma.navItem.deleteMany()])
 
     for (const [index, item] of items.entries()) {
       await prisma.navItem.create({
@@ -43,8 +40,9 @@ export async function POST(req) {
       })
     }
 
-    return NextResponse.json({ success: true })
+    return Response.json({ success: true })
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error(error)
+    return Response.json({ error: error.message }, { status: 500 })
   }
 }

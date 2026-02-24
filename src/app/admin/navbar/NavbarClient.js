@@ -77,6 +77,28 @@ export default function NavbarClient() {
     setItems(newItems)
   }
 
+  const moveItem = (index, direction) => {
+    const newItems = [...items]
+    const targetIndex = index + direction
+    if (targetIndex < 0 || targetIndex >= newItems.length) return
+    const temp = newItems[index]
+    newItems[index] = newItems[targetIndex]
+    newItems[targetIndex] = temp
+    setItems(newItems)
+  }
+
+  const moveSubItem = (parentIndex, subIndex, direction) => {
+    const newItems = [...items]
+    const subItems = [...newItems[parentIndex].subItems]
+    const targetIndex = subIndex + direction
+    if (targetIndex < 0 || targetIndex >= subItems.length) return
+    const temp = subItems[subIndex]
+    subItems[subIndex] = subItems[targetIndex]
+    subItems[targetIndex] = temp
+    newItems[parentIndex].subItems = subItems
+    setItems(newItems)
+  }
+
   return (
     <div className="bg-white p-6 rounded border shadow-sm max-w-4xl">
       <div className="flex justify-between items-center mb-6">
@@ -88,8 +110,27 @@ export default function NavbarClient() {
         {items.map((item, index) => (
           <div key={index} className="border rounded p-4 bg-gray-50 flex flex-col gap-3">
             <div className="flex flex-col md:flex-row items-center gap-3">
+              <div className="flex shrink-0 gap-1">
+                <Button
+                  variant="outline"
+                  className="px-2"
+                  disabled={index === 0}
+                  onClick={() => moveItem(index, -1)}
+                >
+                  ↑
+                </Button>
+                <Button
+                  variant="outline"
+                  className="px-2"
+                  disabled={index === items.length - 1}
+                  onClick={() => moveItem(index, 1)}
+                >
+                  ↓
+                </Button>
+              </div>
+
               <div className="grow flex items-center gap-2 w-full">
-                <span className="font-bold text-gray-500">{index + 1}.</span>
+                <span className="font-bold text-gray-500 whitespace-nowrap">{index + 1}.</span>
                 <Input
                   className="bg-white"
                   placeholder="Címke (pl. Iskolánk)"
@@ -118,6 +159,24 @@ export default function NavbarClient() {
                 {item.subItems.map((sub, sIndex) => (
                   <div key={sIndex} className="flex gap-2 items-center">
                     <span className="text-gray-400">↳</span>
+                    <div className="flex shrink-0 gap-1">
+                      <Button
+                        variant="ghost"
+                        className="px-1 text-xs"
+                        disabled={sIndex === 0}
+                        onClick={() => moveSubItem(index, sIndex, -1)}
+                      >
+                        ▲
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        className="px-1 text-xs"
+                        disabled={sIndex === item.subItems.length - 1}
+                        onClick={() => moveSubItem(index, sIndex, 1)}
+                      >
+                        ▼
+                      </Button>
+                    </div>
                     <Input
                       className="bg-white text-sm"
                       placeholder="Almenü Címke"
