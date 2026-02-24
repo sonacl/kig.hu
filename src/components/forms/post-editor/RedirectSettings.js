@@ -5,7 +5,7 @@ export default function RedirectSettings({ redirectUrl, setRedirectUrl, isAktual
 
   return (
     <div className="bg-gray-50 p-4 border rounded">
-      <h3 className="font-bold mb-3 border-b pb-1 text-sm">Továbbítás (Redirect)</h3>
+      <h3 className="font-bold mb-3 border-b pb-1 text-sm">Átirányítás</h3>
       <Input
         placeholder="Pl. https://kig.hu/vagy-mas vagy /valami (opcionális)"
         className="mb-2"
